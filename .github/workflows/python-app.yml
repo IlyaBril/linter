@@ -33,3 +33,10 @@ jobs:
     - name: Test with black
       run: |
         black --diff -check
+
+    - name: Test with mypy
+      run: |
+        mypy
+    - name: Test with isort
+      run: |
+        isort --check-only --diff
