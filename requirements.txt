@@ -3,3 +3,9 @@ uvicorn[standard]==0.15.0
 sqlalchemy==1.4.26
 aiosqlite==0.17.0
 greenlet==1.1.2
+black==24.10.0
+flake8==7.1.1
+flake8-pie==0.16.0
+isort==5.13.2
+mypy==1.13.0
+
