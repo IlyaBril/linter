@@ -7,7 +7,6 @@ from sqlalchemy.future import select
 from ..app import models, schemas
 from ..app.database import engine, session
 
-# from python_advanced.module_30_ci_linters.homework.hw1.app.database import engine, session
 
 
 app = FastAPI()
@@ -59,8 +58,9 @@ async def recipes_idx(idx: Optional[int] = None):
     if idx:
         recipe = await session.get(models.Recipe, idx)
         count = await session.get(models.RecipeList, idx)
-        if not recipe:
+        if not recipe or not count:
             raise HTTPException(status_code=404, detail="Recipe not found")
+
         count.view_count = count.view_count + 1
 
         await session.commit()

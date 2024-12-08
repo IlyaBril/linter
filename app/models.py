@@ -1,5 +1,4 @@
-# from database import Base
-from python_advanced.module_30_ci_linters.homework.hw1.app.database import Base
+from .database import Base
 from sqlalchemy import Column, Integer, String
 
 
