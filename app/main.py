@@ -1,10 +1,12 @@
 import logging
-import models
-import schemas
+from ..app import schemas
+from ..app import models
 from typing import List, Optional
 from fastapi import FastAPI, HTTPException
 from sqlalchemy.future import select
-from database import engine, session
+#from database import engine, session
+from python_advanced.module_30_ci_linters.homework.hw1.app.database import engine, session
+
 
 app = FastAPI()
 

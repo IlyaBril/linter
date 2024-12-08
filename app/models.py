@@ -1,6 +1,7 @@
 from sqlalchemy import Column, String, Integer
 
-from database import Base
+#from database import Base
+from python_advanced.module_30_ci_linters.homework.hw1.app.database import Base
 
 
 class BaseRecipe(Base):
