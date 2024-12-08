@@ -36,7 +36,7 @@ jobs:
 
     - name: Test with mypy
       run: |
-        mypy
+        mypy app
     - name: Test with isort
       run: |
-        isort --check-only --diff
+        isort --check-only --diff app
