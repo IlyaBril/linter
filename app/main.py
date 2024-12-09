@@ -1,5 +1,5 @@
 import logging
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 from fastapi import FastAPI, HTTPException
 from sqlalchemy.future import select
@@ -44,34 +44,32 @@ async def recipes(recipe: schemas.RecipeIn) -> models.Recipe:
 
 @app.get("/recipes/{idx}", response_model=schemas.RecipeInOut)
 @app.get("/recipes/", response_model=List[schemas.RecipeListOut])
-async def recipes_idx(idx: Optional[int] = None) -> List:
+async def recipes_idx(idx: Optional[int] = None) -> List[Dict | None]:
     """
-    Endpoint to retrieve a list of all recipes or single recipe if idx provided.
+    Endpoint to retrieve a list of all or single recipe if idx provided.
     Returns:
-        List[RecipeList]: list of RecipeList objects representing all recipes in the database.
+        List[RecipeList]:
+        list of RecipeList objects representing all recipes in the database.
         or, if idx provided:
-        RecipeList: recipe returned by id number. Increase view_count by 1
+        RecipeList:
+        recipe returned by id number. Increase view_count by 1
 
     """
     if idx:
         recipe = await session.get(models.Recipe, idx)
         count = await session.get(models.RecipeList, idx)
-        logger.info('recipe type {}, count type {}'.format(type(recipe), type(count)))
         if not recipe or not count:
             raise HTTPException(status_code=404, detail="Recipe not found")
 
         count.view_count = count.view_count + 1
-        logger.info('count.view count type {}'.format(type(count.view_count)))
 
         await session.commit()
     else:
-        recipe = await (session.execute(
+        recipe = await session.execute(
             select(models.RecipeList).order_by(
                 models.RecipeList.view_count.desc(),
                 models.RecipeList.preparation_time.desc(),
             )
         )
-        )
         recip = recipe.scalars().all()
-        logger.info("recipe type {}".format(type(recip)))
     return recip

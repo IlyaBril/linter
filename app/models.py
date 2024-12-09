@@ -33,7 +33,8 @@ class RecipeList(BaseRecipe):
 
 class Recipe(BaseRecipe):
     """
-    Represents class used for return recipe by id or to add a new recipe to the database.
+    Represents class used for return recipe by id or
+    to add a new recipe to the database.
 
     Attributes:
         product_list (str): list of ingredients necessary for dish preparation
