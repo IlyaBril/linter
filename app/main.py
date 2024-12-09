@@ -7,8 +7,6 @@ from sqlalchemy.future import select
 from ..app import models, schemas
 from ..app.database import engine, session
 
-
-
 app = FastAPI()
 
 logger = logging.getLogger(__name__)
@@ -46,7 +44,7 @@ async def recipes(recipe: schemas.RecipeIn) -> models.Recipe:
 
 @app.get("/recipes/{idx}", response_model=schemas.RecipeInOut)
 @app.get("/recipes/", response_model=List[schemas.RecipeListOut])
-async def recipes_idx(idx: Optional[int] = None):
+async def recipes_idx(idx: Optional[int] = None) -> List:
     """
     Endpoint to retrieve a list of all recipes or single recipe if idx provided.
     Returns:
@@ -58,19 +56,22 @@ async def recipes_idx(idx: Optional[int] = None):
     if idx:
         recipe = await session.get(models.Recipe, idx)
         count = await session.get(models.RecipeList, idx)
+        logger.info('recipe type {}, count type {}'.format(type(recipe), type(count)))
         if not recipe or not count:
             raise HTTPException(status_code=404, detail="Recipe not found")
 
         count.view_count = count.view_count + 1
+        logger.info('count.view count type {}'.format(type(count.view_count)))
 
         await session.commit()
     else:
-        recipe = await session.execute(
+        recipe = await (session.execute(
             select(models.RecipeList).order_by(
                 models.RecipeList.view_count.desc(),
                 models.RecipeList.preparation_time.desc(),
             )
         )
-        recipe = recipe.scalars().all()
-        logger.info("recipe {}".format(recipe))
-    return recipe
+        )
+        recip = recipe.scalars().all()
+        logger.info("recipe type {}".format(type(recip)))
+    return recip
