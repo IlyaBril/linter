@@ -21,6 +21,7 @@ class RecipeInOut(BaseRecipe):
     class Config:
         orm_mode = True
 
+
 class RecipeIn(BaseRecipe):
     product_list: str
     recipe_description: str
