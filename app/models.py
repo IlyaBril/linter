@@ -1,7 +1,6 @@
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, Integer, String
 
-#from database import Base
-from python_advanced.module_30_ci_linters.homework.hw1.app.database import Base
+from .database import Base
 
 
 class BaseRecipe(Base):
@@ -14,7 +13,7 @@ class BaseRecipe(Base):
         preparation_time (int): Preparation time of the dish in minutes.
     """
 
-    __tablename__ = 'Recipe'
+    __tablename__ = "Recipe"
 
     id = Column(Integer, primary_key=True, index=True)
     dish_name = Column(String, index=True)
@@ -34,7 +33,8 @@ class RecipeList(BaseRecipe):
 
 class Recipe(BaseRecipe):
     """
-    Represents class used for return recipe by id or to add a new recipe to the database.
+    Represents class used for return recipe by id or
+    to add a new recipe to the database.
 
     Attributes:
         product_list (str): list of ingredients necessary for dish preparation
